@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox fx:id="rootVBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="575.0" prefWidth="600.0" styleClass="backPanel" stylesheets="@/ChatWindowJavaFX/client/css/Style.css"
+      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ChatWindowJavaFX.client.Controller">
+    <children>
+        <Pane prefHeight="140.0" prefWidth="600.0" />
+        <HBox prefHeight="252.0" prefWidth="600.0">
+            <children>
+                <Pane prefHeight="200.0" prefWidth="180.0" />
+                <VBox fx:id="loginPasswordPanel" alignment="CENTER" prefHeight="200.0" prefWidth="260.0">
+                    <children>
+                        <Label fx:id="labelNotIdentification" styleClass="notIdentification" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="260.0">
+                            <children>
+                                <Label styleClass="label-login-password" text="LOGIN" />
+                                <TextField fx:id="loginField" promptText="login" styleClass="text-field-login-password" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="260.0">
+                            <children>
+                                <Label styleClass="label-login-password" text="PASSWORD" />
+                                <PasswordField fx:id="passwordField" onAction="#tryToAuth" promptText="password" styleClass="text-field-login-password" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="260.0">
+                            <children>
+                                <Hyperlink prefWidth="175.0" styleClass="hyperlink-forgot" text="Forget password?" />
+                                <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#tryToAuth" styleClass="button-login" text="Login" />
+                            </children>
+                        </HBox>
+                        <Hyperlink onAction="#registration" styleClass="hyperlink-registration" text="Registration" />
+                    </children>
+                </VBox>
+                <Pane prefHeight="200.0" prefWidth="180.0" />
+            </children>
+        </HBox>
+        <Pane prefHeight="278.0" prefWidth="600.0" />
+    </children>
+</VBox>

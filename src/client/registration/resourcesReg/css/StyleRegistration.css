@@ -1,0 +1,30 @@
+.backPanel{
+    -fx-background-color: #9bddff;
+}
+.button-reg{
+    -fx-font-size: 14;
+    -fx-text-fill: 1c00a5;
+    -fx-background-color: #ffdb8c;
+}
+
+.err-lbl{
+    -fx-font-size: 12;
+    -fx-alignment: CENTER;
+    -fx-text-fill: RED;
+}
+
+.usually-labels{
+    -fx-font-size: 14;
+    -fx-text-fill: BLACK;
+    -fx-pref-height: 134;
+    -fx-pref-width: 322;
+
+}
+.reg-form-lbl{
+    -fx-alignment: CENTER;
+    -fx-pref-height: 80;
+    -fx-font-size: 18;
+    -fx-text-fill: #1c00a5;
+}
+
+

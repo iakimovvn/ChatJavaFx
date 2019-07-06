@@ -1,0 +1,173 @@
+.loginTitleBlueRed{
+    -fx-background-color: #8dbfff;
+    -fx-pref-height: 40;
+    -fx-pref-width: 280;
+    -fx-alignment: CENTER;
+    -fx-border-color: #1e02ff;
+}
+
+.loginTitleGreenYellow{
+    -fx-background-color: #b0ff75;
+    -fx-pref-height: 40;
+    -fx-pref-width: 280;
+    -fx-alignment: CENTER;
+    -fx-border-color: #009341;
+}
+
+.textFlowPassword{
+    -fx-text-alignment: center;
+    -fx-background-color: #d1fffa;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-font-family: Arial;
+    -fx-font-size: 15;
+    -fx-text-fill: #1e02ff;
+    -fx-pref-height: 476;
+    -fx-pref-width: 382;
+}
+
+.textFlow{
+    -fx-background-color: #d1fffa;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-font-family: Arial;
+    -fx-font-size: 15;
+    -fx-text-fill: #1e02ff;
+    -fx-pref-height: 476;
+    -fx-pref-width: 382;
+}
+
+
+.userLogin{
+    -fx-alignment: CENTER;
+    -fx-pref-height: 40;
+    -fx-pref-width: 150;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.contactsTitleBlueRed{
+    -fx-background-color: #ffb7ab;
+    -fx-pref-height: 40;
+    -fx-pref-width: 280;
+    -fx-alignment: CENTER;
+    -fx-border-color: #ff0134;
+    -fx-font-family: Arial;
+    -fx-font-size: 18;
+}
+.contactsGreenYellow{
+    -fx-background-color: #ffd372;
+    -fx-pref-height: 40;
+    -fx-pref-width: 280;
+    -fx-alignment: CENTER;
+    -fx-border-color: #ff9500;
+    -fx-font-family: Arial;
+    -fx-font-size: 18;
+}
+.messageSite{
+    -fx-pref-width: 400;
+
+
+}
+
+.contactsSite{
+    -fx-pref-width: 200;
+}
+.loginLabel{
+    -fx-font-family: Arial;
+    -fx-font-size: 18;
+    -fx-text-fill: RED;
+}
+
+.backPanel{
+    -fx-border-color: #d1fffa;
+    -fx-color-label-visible: #d1fffa;;
+    -fx-background-color: #d1fffa;
+}
+.scroll-pane .viewport{
+    -fx-background-color: #d1fffa;
+}
+.scroll-pane {
+    -fx-pref-height: 280;
+    -fx-pref-width: 300;
+}
+
+.scrollPaneContacts{
+    -fx-pref-height: 150;
+    -fx-pref-width: 300;
+    -fx-background-color: #fff7e8;
+}
+.textFlowContacts{
+    -fx-background-color: #fff7e8;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-font-family: Arial;
+    -fx-font-size: 15;
+    -fx-text-fill: #1e02ff;
+    -fx-pref-height: 504;
+    -fx-pref-width: 198,5;
+}
+
+.sendButtonRed{
+    -fx-background-color: #ffb7ab;
+}
+.sendButtonYellow{
+    -fx-background-color: #ffe06f;
+}
+
+.label-login-password{
+    -fx-font-size: 16;
+    -fx-text-alignment: left;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 170;
+    -fx-pref-height: 78;
+}
+.text-field-login-password{
+    -fx-pref-height: 25;
+    -fx-pref-width: 200;
+}
+
+.button-login{
+    -fx-border-color: #ffac21;
+    -fx-background-color: #fff081;
+    -fx-pref-width: 75;
+    -fx-pref-height: 27;
+}
+
+.hyperlink-registration{
+    -fx-pref-height: 32;
+    -fx-pref-width: 260;
+}
+
+.hyperlink-forgot{
+    -fx-pref-width: 180;
+    -fx-pref-height: 30;
+}
+.notIdentification{
+    -fx-pref-width: 182;
+    -fx-pref-height: 27;
+    -fx-text-fill: RED;
+    -fx-font-size: 14;
+    -fx-font-family: Arial;
+}
+
+.hyperlink-nickname{
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+    -fx-text-fill: red;
+
+}
+
+.circleNotInNet{
+    -fx-fill: Red;
+}
+.circleInNet{
+    -fx-fill: Green;
+}
+
+
+
+
+
+
+
