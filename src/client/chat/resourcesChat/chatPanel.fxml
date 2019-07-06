@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="vBox-back-chat"
+      stylesheets="@/client/chat/resourcesChat/css/StyleChat.css" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.chat.ControllerChat">
+   <children>
+      <HBox prefHeight="575.0" prefWidth="600.0" styleClass="vBox-back-chat">
+         <children>
+            <VBox prefHeight="575.0" prefWidth="400.0" styleClass="vBox-left">
+               <children>
+                  <HBox prefHeight="40.0" prefWidth="200.0" styleClass="hBox-nickname">
+                     <children>
+                        <Label fx:id="nickName" prefHeight="35.0" styleClass="label-nickName" text="userName" />
+                        <Circle fx:id="circleIsInNet" disable="true" fill="DODGERBLUE" radius="8.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" styleClass="circle-not-in-net" />
+                     </children>
+                  </HBox>
+                  <VBox fx:id="vBoxMessage" prefHeight="595.0" prefWidth="400.0" styleClass="vBox-msg" />
+                  <HBox prefHeight="30.0" prefWidth="400.0">
+                     <children>
+                        <TextField fx:id="messageTextField" onAction="#sendMsg" promptText="Введите сообщение..." styleClass="text-field-msg" />
+                        <Button mnemonicParsing="false" onAction="#sendMsg" styleClass="button-send-msg" text="SEND" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="575.0" prefWidth="200.0" styleClass="vBox-right" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="label-user-in-net" text="users in net" />
+                  <ListView fx:id="clientList" prefHeight="537.0" prefWidth="200.0" styleClass="list-view-in-net" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -11,10 +11,15 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="575.0" prefWidth="600.0" styleClass="backPanel"
-      stylesheets="@/ChatWindowJavaFX/client/Registration/css/StyleRegistration.css" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ChatWindowJavaFX.client.Registration.RegController">
+      stylesheets="@/client/registration/resourcesReg/css/StyleRegistration.css" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.registration.RegController">
    <children>
-      <Pane prefHeight="102.0" prefWidth="600.0" />
+      <HBox prefHeight="30.0" prefWidth="600.0">
+         <Button  mnemonicParsing="false" onAction="#backToLoginScene"
+                  styleClass="button-back" text="BACK" />
+         <Pane prefHeight="30.0" prefWidth="520"/>
+      </HBox>
+      <Pane prefHeight="72.0" prefWidth="600.0" />
       <HBox prefHeight="366.0" prefWidth="600.0">
          <children>
             <Pane prefHeight="462.0" prefWidth="139.0" />
@@ -23,13 +28,13 @@
                   <Label fx:id="registrationLbl" prefHeight="79.0" prefWidth="322.0" styleClass="reg-form-lbl" text="Registration" />
                   <Label fx:id="errMsg" prefHeight="17.0" prefWidth="322.0" styleClass="err-lbl" />
                   <Label styleClass="usually-labels" text="LOGIN" />
-                  <TextField fx:id="loginField" promptText="login" />
+                  <TextField fx:id="loginField" promptText="login" onAction="#toRegistration"/>
                   <Label styleClass="usually-labels" text="PASSWORD" />
-                  <TextField fx:id="passField" promptText="password" />
+                  <TextField fx:id="passField" promptText="password" onAction="#toRegistration"/>
                   <Label styleClass="usually-labels" text="RE PASSWORD" />
-                  <TextField fx:id="rePassField" promptText="password" />
+                  <TextField fx:id="rePassField" promptText="password" onAction="#toRegistration"/>
                   <Label styleClass="usually-labels" text="NICKNAME" />
-                  <TextField fx:id="nickField" promptText="nickname" />
+                  <TextField fx:id="nickField" promptText="nickname" onAction="#toRegistration"/>
                   <Label styleClass="usually-labels" text="CONTROL WORD (if forget password)" />
                   <TextField fx:id="controlWord" onAction="#toRegistration" promptText="control word" />
                   <Pane prefHeight="20"/>

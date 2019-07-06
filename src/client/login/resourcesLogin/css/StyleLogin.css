@@ -1,0 +1,46 @@
+.button-login{
+    -fx-border-color: #ffac21;
+    -fx-background-color: #fff081;
+    -fx-pref-width: 75;
+    -fx-pref-height: 27;
+}
+
+.hyperlink-forgot{
+    -fx-pref-width: 180;
+    -fx-pref-height: 30;
+}
+
+.hyperlink-registration{
+    -fx-pref-height: 32;
+    -fx-pref-width: 260;
+}
+
+.label-login-password{
+    -fx-font-size: 16;
+    -fx-text-alignment: left;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 170;
+    -fx-pref-height: 78;
+}
+
+.label-not-identification{
+    -fx-pref-width: 182;
+    -fx-pref-height: 27;
+    -fx-text-fill: RED;
+    -fx-font-size: 14;
+    -fx-font-family: Arial;
+}
+
+
+.text-field-login-password{
+    -fx-pref-height: 25;
+    -fx-pref-width: 200;
+}
+
+.vBox-back-login{
+    -fx-background-color: #d1fffa;
+    -fx-pref-width: 600;
+    -fx-pref-height: 575;
+}
+
+

@@ -1,0 +1,71 @@
+
+.button-send-msg{
+    -fx-pref-width: 60;
+    -fx-pref-height: 30;
+    -fx-background-color: #ffb7ab;
+}
+
+.circle-not-in-net{
+    -fx-fill: Red;
+}
+.circle-in-net{
+    -fx-fill: Green;
+}
+.hBox-back{
+    -fx-pref-width: 600;
+    -fx-pref-height: 575;
+}
+.hBox-nickname{
+    -fx-background-color: #8dbfff;
+    -fx-pref-height: 40;
+    -fx-pref-width: 400;
+    -fx-alignment: CENTER;
+    -fx-border-color: #1e02ff;
+}
+
+.label-nickName{
+    -fx-alignment: CENTER;
+    -fx-pref-height: 40;
+    -fx-pref-width: 150;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.label-user-in-net{
+    -fx-background-color: #ffb7ab;
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER;
+    -fx-border-color: #ff0134;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.list-view-in-net{
+    -fx-background-color: #fff7e8;
+}
+
+.text-field-msg{
+    -fx-pref-height: 30;
+    -fx-pref-width: 340;
+}
+
+.vBox-back-chat{
+    -fx-pref-width: 600;
+    -fx-pref-height: 575;
+}
+.vBox-left{
+    -fx-background-color: #d1fffa;
+    -fx-pref-width: 400;
+    -fx-pref-height: 575;
+}
+.vBox-right{
+    -fx-pref-width: 200;
+    -fx-pref-height: 575;
+    -fx-background-color: #fff7e8;
+}
+.vBox-msg{
+    -fx-pref-width: 400;
+    -fx-pref-height: 505;
+}
+

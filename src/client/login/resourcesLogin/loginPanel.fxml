@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox fx:id="rootVBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="575.0" prefWidth="600.0" styleClass="backPanel" stylesheets="@/ChatWindowJavaFX/client/css/Style.css"
-      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ChatWindowJavaFX.client.Controller">
+      styleClass="vBox-back-login" stylesheets="@/client/login/resourcesLogin/css/StyleLogin.css"
+      xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.login.ControllerLogin">
     <children>
         <Pane prefHeight="140.0" prefWidth="600.0" />
         <HBox prefHeight="252.0" prefWidth="600.0">
@@ -14,7 +14,7 @@
                 <Pane prefHeight="200.0" prefWidth="180.0" />
                 <VBox fx:id="loginPasswordPanel" alignment="CENTER" prefHeight="200.0" prefWidth="260.0">
                     <children>
-                        <Label fx:id="labelNotIdentification" styleClass="notIdentification" />
+                        <Label fx:id="labelNotIdentification" styleClass="label-not-identification" />
                         <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="260.0">
                             <children>
                                 <Label styleClass="label-login-password" text="LOGIN" />
