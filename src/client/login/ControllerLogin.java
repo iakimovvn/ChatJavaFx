@@ -71,13 +71,12 @@ public class ControllerLogin {
     }
 
 
-//    public void tryToAuth(){
-//        ChatMain.primaryStage.setScene(ChatMain.sceneChat);
-//
-//    }
-
     public void registration(){
         ChatMain.primaryStage.setScene(ChatMain.sceneRegistration);
+    }
+
+    public void recoveryPass(){
+        ChatMain.primaryStage.setScene(ChatMain.sceneRecovery);
     }
 
 

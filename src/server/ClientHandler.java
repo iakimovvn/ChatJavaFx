@@ -36,6 +36,9 @@ public class ClientHandler {
                             if(str.startsWith("/registration")){
                                 out.writeUTF(AuthService.registration(str));
                             }
+                            if(str.startsWith("/recovery")){
+                                out.writeUTF(AuthService.recoveryPass(str));
+                            }
                             if(str.startsWith("/auth")) {
                                 String[] tokens = str.split(" ");
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);

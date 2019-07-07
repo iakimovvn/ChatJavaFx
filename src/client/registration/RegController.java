@@ -64,17 +64,18 @@ public class RegController {
             if(socket == null || socket.isClosed()){
                 connectReg();
             }
-
-            try {
-                out.writeUTF("/registration "+loginField.getText()+" "+passField.getText()+" "
+            sendToServer("/registration "+loginField.getText()+" "+passField.getText()+" "
                         +nickField.getText()+" "+controlWord.getText());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
         }
 
+    }
+
+    public void sendToServer(String str){
+        try {
+            out.writeUTF(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void connectReg(){
@@ -104,8 +105,13 @@ public class RegController {
                                         controlWord.clear();
                                     }
                                 });
-                                out.writeUTF("/end");
-                            }else{
+                                sendToServer("/end");
+                                break;
+                            }else if (str.startsWith("/recovery")){
+                                ChatMain.recoveryController.readResult(str);
+                                break;
+                            }
+                            else{
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {

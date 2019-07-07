@@ -122,17 +122,17 @@ public class AuthService {
 
     }
 
-    public static String registration(String regDate){
+    public static String registration(String regData){
         String msg="";
-        String[] regDateArr = regDate.split(" ");
+        String[] regDataArr = regData.split(" ");
         try {
-            if(isUserWithLogin(regDateArr[1])){
-                msg = "Пользователь с логином "+regDateArr[1]+ " уже зарегистрирован";
-            }else if(isUserWithNick(regDateArr[3])){
-                msg = "Пользователь с ником "+regDateArr[3]+ " уже зарегистрирован";
+            if(isUserWithLogin(regDataArr[1])){
+                msg = "Пользователь с логином "+regDataArr[1]+ " уже зарегистрирован";
+            }else if(isUserWithNick(regDataArr[3])){
+                msg = "Пользователь с ником "+regDataArr[3]+ " уже зарегистрирован";
             }else {
                 String sql = String.format("INSERT INTO main (login, password, nickname, controlword)\n" +
-                        "VALUES ('%s', '%s','%s','%s');", regDateArr[1], regDateArr[2], regDateArr[3], regDateArr[4]);
+                        "VALUES ('%s', '%s','%s','%s');", regDataArr[1], regDataArr[2], regDataArr[3], regDataArr[4]);
                 stmt.execute(sql);
                 msg = "/regok";
             }
@@ -141,6 +141,24 @@ public class AuthService {
             e.printStackTrace();
         }
         return msg;
+    }
+    public static String recoveryPass(String recoveryData){
+        String resMsg = "/recovery ";
+        String[] recoveryDataArr = recoveryData.split(" ");
+        String sql = String.format("SELECT password FROM main where login = '%s' and  controlword = '%s';"
+                ,recoveryDataArr[1],recoveryDataArr[2]);
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            if(rs.next()){
+                resMsg+=rs.getString(1);
+            }
+            else {
+                resMsg+="Пользователь не найден";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resMsg;
     }
 
 
