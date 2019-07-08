@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import sun.rmi.runtime.RuntimeUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class ControllerChat {
 
@@ -103,9 +105,11 @@ public class ControllerChat {
                                 });
                             } else if (str.startsWith("/w")) {
                                 getPrivateMessage(str);
+                            } else if(str.startsWith("/systemmsg")){
+                                getSystemMessage(str);
                             }
                             else {
-                                inputToVBoxMessage(str + "\n");
+                                inputToVBoxMessage(str );
                             }
                         }
                     } catch (IOException e) {
@@ -138,15 +142,33 @@ public class ControllerChat {
 
     }
 
-    private void inputToVBoxMessage(String msg){
+    private void getSystemMessage(String msg){
+        String[] msgArr = msg.split(" ",2);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Label msgLbl = new Label();
-                msgLbl.setText(msg);
-                vBoxMessage.getChildren().add(msgLbl);
+                vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
             }
         });
+    }
+
+    private void inputToVBoxMessage(String msg){
+        String[] msgArr = msg.split(" ",2);
+        if(msgArr[0].equals(nickName.getText())) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    vBoxMessage.getChildren().add(new MyMessageHBox(msgArr[0], makeMessageForLabel(msgArr[1])));
+                }
+            });
+        }else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    vBoxMessage.getChildren().add(new OtherMessageHBox(msgArr[0], makeMessageForLabel(msgArr[1])));
+                }
+            });
+        }
 
     }
 
@@ -163,7 +185,11 @@ public class ControllerChat {
             String nickTo = clientList.getSelectionModel().getSelectedItem();
             if(nickName.getText().equals(nickTo)){
             }else{
-                createPrivateChat(nickTo);
+                if(!isTherePrivateWithNickTo(nickTo)){
+                    createPrivateChat(nickTo);
+                }else{
+                    makeTop(nickTo);
+                }
             }
         }
     }
@@ -176,6 +202,7 @@ public class ControllerChat {
             PrivateStage ps = iterator.next();
             if(ps.privateNickTo.equals(nickTo)){
                 isThere = true;
+                break;
             }
         }
         return isThere;
@@ -185,8 +212,15 @@ public class ControllerChat {
         String[] privateMsgArr = str.split(" ",4);
         if(!privateMsgArr[1].equals(nickName.getText()) && !isTherePrivateWithNickTo(privateMsgArr[1])){
             createPrivateChat(privateMsgArr[1]);
-
+        }else{
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    makeTop(privateMsgArr[1]);
+                }
+            });
         }
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -196,7 +230,28 @@ public class ControllerChat {
         while(iterator.hasNext()){
             PrivateStage ps = iterator.next();
             if(ps.privateNickTo.equals(privateMsgArr[1])){
-                ps.controllerPrivateChat.addToVBoxMessage(new Label(privateMsgArr[2]+": "+privateMsgArr[3]));
+                if(str.startsWith("/wsystemmsg")){
+                    ps.controllerPrivateChat.addToVBoxMessage(new SystemMessageHBox(
+                            privateMsgArr[2]+" "+privateMsgArr[3]));
+                }
+                else if (privateMsgArr[2].equals(nickName.getText())) {
+                    ps.controllerPrivateChat.addToVBoxMessage(new MyMessageHBox(privateMsgArr[2],privateMsgArr[3]));
+                    break;
+                }else{
+                    ps.controllerPrivateChat.addToVBoxMessage(new OtherMessageHBox(privateMsgArr[2],privateMsgArr[3]));
+                    break;
+                }
+            }
+        }
+    }
+
+    private void makeTop(String nickTo){
+        Iterator<PrivateStage> iterator = privateStageArrayList.iterator();
+        while (iterator.hasNext()){
+            PrivateStage ps =iterator.next();
+            if(ps.privateNickTo.equals(nickTo)){
+                ps.setAlwaysOnTop(true);
+                ps.setAlwaysOnTop(false);
                 break;
             }
         }
@@ -215,6 +270,31 @@ public class ControllerChat {
 
             }
         });
+    }
+
+    private String makeMessageForLabel(String msg){
+        final int NUMBER_IF_SINGS = 37;
+        if(msg.length() > NUMBER_IF_SINGS){
+            String[] msgArr = msg.split(" ");
+            StringBuilder stringBuilder = new StringBuilder();
+            int singsNow = 0;
+            for (String word : msgArr) {
+                if(singsNow+word.length() < NUMBER_IF_SINGS){
+                    stringBuilder.append(word);
+                    stringBuilder.append(" ");
+                    singsNow+=word.length()+1;
+                }else{
+                    stringBuilder.append("\n");
+                    stringBuilder.append(word);
+                    singsNow = 0;
+                }
+
+            }
+            msg = stringBuilder.toString();
+
+        }
+        return msg;
+
     }
 
     public void deleteFromPrivateStageArrayList(PrivateStage ps){

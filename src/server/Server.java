@@ -52,6 +52,12 @@ public class Server {
         return false;
     }
 
+    public void broadcastSystemMsg(String msg){
+        for (ClientHandler o: clients) {
+            o.sendMsg("/systemmsg "+msg);
+        }
+    }
+
     public void broadcastMsg(ClientHandler from, String msg) {
         for (ClientHandler o : clients) {
             if (!AuthService.isInBlackList(from.getNick(),o.getNick())) {
@@ -64,7 +70,7 @@ public class Server {
         for (ClientHandler o : clients) {
             if (o.getNick().equals(nickTo)) {
                 if(AuthService.isInBlackList(o.getNick(),from.getNick())){
-                    from.sendMsg("Вы находитесь в черном списке.");
+                    from.sendMsg("/wsystemmsg "+nickTo+" Вы находитесь в черном списке.");
                     return;
                 }else {
                     o.sendMsg("/w " + from.getNick() +" "+ from.getNick()+" " + msg);
@@ -73,7 +79,7 @@ public class Server {
                 }
             }
         }
-        from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
+        from.sendMsg("/systemmsg Клиент с ником " + nickTo + " не в чате");
     }
 
     private String makeMessageFromArray(String[] arr, int from, int to){
@@ -87,11 +93,13 @@ public class Server {
 
     public void subscribe (ClientHandler clientHandler){
         clients.add(clientHandler);
+        broadcastSystemMsg(clientHandler.getNick()+" полдключился");
         broadcastClientList();
     }
 
     public void unsubscribe (ClientHandler clientHandler){
         clients.remove(clientHandler);
+        broadcastSystemMsg(clientHandler.getNick()+" отключился");
         broadcastClientList();
     }
 

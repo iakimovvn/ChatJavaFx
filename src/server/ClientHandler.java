@@ -72,24 +72,27 @@ public class ClientHandler {
                                 if(str.startsWith("/blacklist")){
                                     String[] tokens = str.split(" ");
                                     if(nick.equals(tokens[1])){
-                                        sendMsg("Вы не можете добавить в черный список самого себя");
+                                        sendMsg("/systemmsg Вы не можете добавить в черный список самого себя");
                                     }
                                     else if(AuthService.isUserWithNick(tokens[1])) {
                                         if (AuthService.isInBlackList(nick, tokens[1])) {
-                                            sendMsg("пользователь уже в черном списке");
+                                            sendMsg("/systemmsg пользователь уже в черном списке");
                                         } else {
                                             AuthService.addToBlackList(nick, tokens[1]);
-                                            sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
+//                                            sendMsg("/systemmsg Вы добавили пользователя " + tokens[1] + " в черный список");
+                                            server.broadcastSystemMsg(nick+" добавил "+tokens[1]+ " в черный список");
                                         }
                                     }else{
-                                        sendMsg("Пользователь с ником "+tokens[1]+" не зарегистрирован");
+                                        sendMsg("/systemmsg Пользователь с ником "+tokens[1]+" не зарегистрирован");
                                     }
                                 }
                                 if(str.startsWith("/delblacklist")){
                                     String[] tokens = str.split(" ");
                                     if (AuthService.isInBlackList(nick, tokens[1])) {
                                         AuthService.deleteFromBlackList(nick, tokens[1]);
-                                        sendMsg("Вы удалили пользователя " + tokens[1] + " из черного списока");
+//                                        sendMsg("Вы удалили пользователя " + tokens[1] + " из черного списока");
+                                        server.broadcastSystemMsg(tokens[1]+ " теперь модет общаться с "+nick);
+
                                     } else {
                                         sendMsg("Пользователя "+ tokens[1]+" нет в черном списке");
 
@@ -100,7 +103,7 @@ public class ClientHandler {
                                     sendMsg("Черный список очищен.");
                                 }
                             }else {
-                                server.broadcastMsg(ClientHandler.this,nick+": "+str);
+                                server.broadcastMsg(ClientHandler.this,nick+" "+str);
                             }
                     }
                 } catch (IOException e) {
