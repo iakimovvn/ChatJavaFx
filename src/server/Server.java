@@ -64,13 +64,13 @@ public class Server {
         for (ClientHandler o : clients) {
             if (o.getNick().equals(nickTo)) {
                 if(AuthService.isInBlackList(o.getNick(),from.getNick())){
-                    from.sendMsg("Вы находитесь в черном списке. Сообщение не отправлено ");
+                    from.sendMsg("Вы находитесь в черном списке.");
                     return;
                 }else {
-                    o.sendMsg("(private) " + from.getNick() + ": " + msg);
-                    from.sendMsg("(private) " + nickTo + ": " + msg);
-                    return;                }
-
+                    o.sendMsg("/w " + from.getNick() +" "+ from.getNick()+" " + msg);
+                    from.sendMsg("/w " + nickTo + " "+from.getNick()+ " " + msg);
+                    return;
+                }
             }
         }
         from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
@@ -94,13 +94,6 @@ public class Server {
         clients.remove(clientHandler);
         broadcastClientList();
     }
-//
-//    public void sendServerCrash(){
-//        for (ClientHandler o: clients) {
-//            o.sendMsg("/servercrash");
-//            System.out.println("Server crash");
-//        }
-//    }
 
 
     public void broadcastClientList(){

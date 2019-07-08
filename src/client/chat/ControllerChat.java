@@ -4,19 +4,19 @@ import client.ChatMain;
 import client.login.ControllerLogin;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 
-import javax.activation.MailcapCommandMap;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ControllerChat {
 
@@ -26,6 +26,8 @@ public class ControllerChat {
 
     private final String IP_ADDRESS = "localhost";
     private final int PORT = 8189;
+
+    private ArrayList<PrivateStage> privateStageArrayList;
 
     private ControllerLogin controllerLogin;
 
@@ -39,7 +41,7 @@ public class ControllerChat {
     private Circle circleIsInNet;
 
     @FXML
-    private ListView <String> clientList;
+    ListView <String> clientList;
 
     @FXML
     private VBox vBoxMessage;
@@ -58,6 +60,8 @@ public class ControllerChat {
             out = new DataOutputStream(socket.getOutputStream());
 
             controllerLogin = ChatMain.controllerLogin;
+
+            privateStageArrayList = new ArrayList<>();
 
 
 
@@ -97,7 +101,10 @@ public class ControllerChat {
                                         }
                                     }
                                 });
-                            } else {
+                            } else if (str.startsWith("/w")) {
+                                getPrivateMessage(str);
+                            }
+                            else {
                                 inputToVBoxMessage(str + "\n");
                             }
                         }
@@ -150,6 +157,71 @@ public class ControllerChat {
             e.printStackTrace();
         }
     }
+
+    public void createPrivateChatFromClick (MouseEvent mouseEvent){
+        if(mouseEvent.getClickCount() == 2){
+            String nickTo = clientList.getSelectionModel().getSelectedItem();
+            if(nickName.getText().equals(nickTo)){
+            }else{
+                createPrivateChat(nickTo);
+            }
+        }
+    }
+
+    private boolean isTherePrivateWithNickTo(String nickTo){
+        boolean isThere = false;
+        Iterator <PrivateStage>iterator = privateStageArrayList.iterator();
+
+        while(iterator.hasNext()){
+            PrivateStage ps = iterator.next();
+            if(ps.privateNickTo.equals(nickTo)){
+                isThere = true;
+            }
+        }
+        return isThere;
+    }
+
+    private void getPrivateMessage(String str){
+        String[] privateMsgArr = str.split(" ",4);
+        if(!privateMsgArr[1].equals(nickName.getText()) && !isTherePrivateWithNickTo(privateMsgArr[1])){
+            createPrivateChat(privateMsgArr[1]);
+
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Iterator <PrivateStage>iterator = privateStageArrayList.iterator();
+        while(iterator.hasNext()){
+            PrivateStage ps = iterator.next();
+            if(ps.privateNickTo.equals(privateMsgArr[1])){
+                ps.controllerPrivateChat.addToVBoxMessage(new Label(privateMsgArr[2]+": "+privateMsgArr[3]));
+                break;
+            }
+        }
+    }
+
+
+    private void createPrivateChat(String nickTo){
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                PrivateStage ps = new PrivateStage(nickTo);
+                privateStageArrayList.add(ps);
+                ps.controllerPrivateChat.setLabelNickTo(nickTo);
+                ps.show();
+
+            }
+        });
+    }
+
+    public void deleteFromPrivateStageArrayList(PrivateStage ps){
+        privateStageArrayList.remove(ps);
+    }
+
+
 
 
 

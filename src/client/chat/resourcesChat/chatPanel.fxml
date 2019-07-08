@@ -35,7 +35,7 @@
             <VBox prefHeight="575.0" prefWidth="200.0" styleClass="vBox-right" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="label-user-in-net" text="users in net" />
-                  <ListView fx:id="clientList" prefHeight="537.0" prefWidth="200.0" styleClass="list-view-in-net" />
+                  <ListView fx:id="clientList" onMouseClicked="#createPrivateChatFromClick" prefHeight="537.0" prefWidth="200.0" styleClass="list-view-in-net" />
                </children>
             </VBox>
          </children>

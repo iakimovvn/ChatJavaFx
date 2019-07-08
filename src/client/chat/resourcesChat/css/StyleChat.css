@@ -22,6 +22,28 @@
     -fx-alignment: CENTER;
     -fx-border-color: #1e02ff;
 }
+.hBox-private-nickName{
+    -fx-background-color: #ffb7ab;
+    -fx-pref-height: 40;
+    -fx-pref-width: 400;
+    -fx-alignment: CENTER;
+    -fx-border-color: #ff0134;
+}
+
+.label-private-with{
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+.label-nickName-private{
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
 
 .label-nickName{
     -fx-alignment: CENTER;
@@ -41,6 +63,7 @@
     -fx-font-size: 20;
 }
 
+
 .list-view-in-net{
     -fx-background-color: #fff7e8;
 }
@@ -53,6 +76,13 @@
 .vBox-back-chat{
     -fx-pref-width: 600;
     -fx-pref-height: 575;
+}
+
+.vBox-back-private-chat{
+    -fx-pref-width: 400;
+    -fx-pref-height: 575;
+    -fx-background-color: #d1fffa;
+
 }
 .vBox-left{
     -fx-background-color: #d1fffa;
