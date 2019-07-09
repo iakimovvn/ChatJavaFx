@@ -71,7 +71,10 @@ public class ClientHandler {
                                 }
                                 if(str.startsWith("/blacklist")){
                                     String[] tokens = str.split(" ");
-                                    if(nick.equals(tokens[1])){
+                                    if(tokens.length == 1){
+                                        sendMsg("/systemmsg command not found");
+                                    }
+                                    else if(nick.equals(tokens[1])){
                                         sendMsg("/systemmsg Вы не можете добавить в черный список самого себя");
                                     }
                                     else if(AuthService.isUserWithNick(tokens[1])) {
@@ -88,19 +91,23 @@ public class ClientHandler {
                                 }
                                 if(str.startsWith("/delblacklist")){
                                     String[] tokens = str.split(" ");
-                                    if (AuthService.isInBlackList(nick, tokens[1])) {
+                                    if(tokens.length ==1){
+                                        sendMsg("/systemmsg вы не ввели ник пользователя");
+
+                                    }
+                                    else if (AuthService.isInBlackList(nick, tokens[1])) {
                                         AuthService.deleteFromBlackList(nick, tokens[1]);
 //                                        sendMsg("Вы удалили пользователя " + tokens[1] + " из черного списока");
                                         server.broadcastSystemMsg(tokens[1]+ " теперь модет общаться с "+nick);
 
                                     } else {
-                                        sendMsg("Пользователя "+ tokens[1]+" нет в черном списке");
+                                        sendMsg("/systemmsg Пользователя "+ tokens[1]+" нет в черном списке");
 
                                     }
                                 }
                                 if(str.startsWith("/clearblacklist")){
                                     AuthService.clearBlackList(nick);
-                                    sendMsg("Черный список очищен.");
+                                    sendMsg("/systemmsg Черный список очищен.");
                                 }
                             }else {
                                 server.broadcastMsg(ClientHandler.this,nick+" "+str);

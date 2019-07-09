@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="vBox-back-private-chat" stylesheets="@/client/chat/resourcesChat/css/StyleChat.css" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.chat.ControllerPrivateChat">
    <children>
       <HBox styleClass="hBox-private-nickName">
@@ -14,8 +15,9 @@
             <Label fx:id="nickNamePrivate" styleClass="label-nickName-private" text="NN" />
          </children>
       </HBox>
-      <VBox fx:id="vBoxMessage" prefHeight="595.0" prefWidth="400.0" styleClass="vBox-msg" />
-      <HBox prefHeight="30.0" prefWidth="400.0">
+      <ScrollPane fx:id="scrollPaneMsg" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" hbarPolicy="NEVER" styleClass="scroll-pane-message">
+         <VBox fx:id="vBoxMessage" prefWidth="400.0" styleClass="vBox-msg" />
+      </ScrollPane>      <HBox prefHeight="30.0" prefWidth="400.0">
          <children>
             <TextField fx:id="messageTextField" onAction="#sendMsg" promptText="Введите сообщение..." styleClass="text-field-msg" />
             <Button mnemonicParsing="false" onAction="#sendMsg" styleClass="button-send-msg" text="SEND" />

@@ -67,6 +67,12 @@
 .list-view-in-net{
     -fx-background-color: #fff7e8;
 }
+.scroll-pane-message{
+
+}
+.scroll-pane-message .viewport{
+    -fx-background-color: #d1fffa;
+}
 
 .text-field-msg{
     -fx-pref-height: 30;
@@ -95,8 +101,8 @@
     -fx-background-color: #fff7e8;
 }
 .vBox-msg{
-    -fx-pref-width: 400;
-    -fx-pref-height: 505;
+    /*-fx-pref-width: 400;*/
+    /*-fx-pref-height: 505;*/
     -fx-spacing: 10;
     -fx-alignment: TOP_CENTER;
 }

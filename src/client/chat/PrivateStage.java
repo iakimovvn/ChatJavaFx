@@ -26,6 +26,7 @@ public class PrivateStage extends Stage {
             controllerPrivateChat= loaderPrivateChat.getController();
 
             setScene(scene);
+            setResizable(false);
             setOnCloseRequest(windowEvent->{
                 ChatMain.controllerChat.deleteFromPrivateStageArrayList(PrivateStage.this);
             });

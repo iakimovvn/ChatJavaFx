@@ -9,6 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 
 
+<?import javafx.scene.control.ScrollPane?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="vBox-back-chat"
       stylesheets="@/client/chat/resourcesChat/css/StyleChat.css" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="client.chat.ControllerChat">
@@ -23,7 +24,9 @@
                         <Circle fx:id="circleIsInNet" disable="true" fill="DODGERBLUE" radius="8.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" styleClass="circle-not-in-net" />
                      </children>
                   </HBox>
-                  <VBox fx:id="vBoxMessage" prefHeight="595.0" prefWidth="400.0" styleClass="vBox-msg" />
+                   <ScrollPane fx:id="scrollPaneMsg" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" hbarPolicy="NEVER" styleClass="scroll-pane-message">
+                     <VBox fx:id="vBoxMessage" prefWidth="400.0" styleClass="vBox-msg" />
+                   </ScrollPane>
                   <HBox prefHeight="30.0" prefWidth="400.0">
                      <children>
                         <TextField fx:id="messageTextField" onAction="#sendMsg" promptText="Введите сообщение..." styleClass="text-field-msg" />

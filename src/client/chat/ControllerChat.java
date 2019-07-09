@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -47,6 +48,9 @@ public class ControllerChat {
 
     @FXML
     private VBox vBoxMessage;
+
+    @FXML
+    private ScrollPane scrollPaneMsg;
 
 
 
@@ -105,10 +109,7 @@ public class ControllerChat {
                                 });
                             } else if (str.startsWith("/w")) {
                                 getPrivateMessage(str);
-                            } else if(str.startsWith("/systemmsg")){
-                                getSystemMessage(str);
-                            }
-                            else {
+                            } else {
                                 inputToVBoxMessage(str );
                             }
                         }
@@ -142,23 +143,31 @@ public class ControllerChat {
 
     }
 
-    private void getSystemMessage(String msg){
-        String[] msgArr = msg.split(" ",2);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
-            }
-        });
-    }
+//    private void getSystemMessage(String msg){
+//        String[] msgArr = msg.split(" ",2);
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
+//            }
+//        });
+//    }
 
     private void inputToVBoxMessage(String msg){
         String[] msgArr = msg.split(" ",2);
-        if(msgArr[0].equals(nickName.getText())) {
+        if(msgArr[0].equals("/systemmsg")){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
+                }
+            });
+        } else if(msgArr[0].equals(nickName.getText())) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     vBoxMessage.getChildren().add(new MyMessageHBox(msgArr[0], makeMessageForLabel(msgArr[1])));
+
                 }
             });
         }else {
@@ -166,9 +175,11 @@ public class ControllerChat {
                 @Override
                 public void run() {
                     vBoxMessage.getChildren().add(new OtherMessageHBox(msgArr[0], makeMessageForLabel(msgArr[1])));
+
                 }
             });
         }
+        scrollPaneMsg.vvalueProperty().bind(vBoxMessage.heightProperty());
 
     }
 

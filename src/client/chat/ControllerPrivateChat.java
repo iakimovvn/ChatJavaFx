@@ -4,6 +4,7 @@ import client.ChatMain;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,6 +20,9 @@ public class ControllerPrivateChat {
     @FXML
     private VBox vBoxMessage;
 
+    @FXML
+    ScrollPane scrollPaneMsg;
+
 
 
 
@@ -28,6 +32,7 @@ public class ControllerPrivateChat {
             @Override
             public void run() {
                 nickNamePrivate.setText(nick);
+
             }
         });
     }
@@ -37,6 +42,8 @@ public class ControllerPrivateChat {
             @Override
             public void run() {
                 vBoxMessage.getChildren().add(messageHBox);
+                scrollPaneMsg.vvalueProperty().bind(vBoxMessage.heightProperty());
+
             }
         });
     }
