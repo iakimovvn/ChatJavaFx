@@ -19,7 +19,7 @@ public class OtherMessageHBox extends HBox {
         messageLbl.setAlignment(Pos.CENTER_RIGHT);
         messageLbl.setTextFill(Color.BLUE);
         messageLbl.setMaxWidth(280);
-        messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(191,255,250), CornerRadii.EMPTY, Insets.EMPTY)));
+        messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(255,225,221), CornerRadii.EMPTY, Insets.EMPTY)));
 
         this.getChildren().add(messageLbl);
 

@@ -171,4 +171,16 @@ public class RegController {
 
     }
 
+    public void dispose(){
+        try {
+            if(out != null) {
+                System.out.println("Close");
+                out.writeUTF("/end");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

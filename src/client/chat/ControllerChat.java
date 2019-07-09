@@ -114,6 +114,7 @@ public class ControllerChat {
                             }
                         }
                     } catch (IOException e) {
+//                        setTimeOut(ControllerChat.this, 1000);
                         e.printStackTrace();
                     }finally {
                         try {
@@ -313,8 +314,19 @@ public class ControllerChat {
     }
 
 
-
-
+    public static void setTimeOut(ControllerChat controllerChat, int delay){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(delay);
+                    controllerChat.connect();
+                    } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     public void dispose(){
         try {

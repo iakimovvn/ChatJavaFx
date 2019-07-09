@@ -40,6 +40,7 @@ public class ChatMain  extends Application {
         primaryStage.show();
         primaryStage.setOnCloseRequest(windowEVENT ->{
             controllerChat.dispose();
+            regController.dispose();
             Platform.exit();
             System.exit(0);
         });
