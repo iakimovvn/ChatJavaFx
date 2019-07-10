@@ -21,12 +21,13 @@ public class ControllerChat {
 
     public Socket socket;
     private DataInputStream in;
-    public DataOutputStream out;
+    private DataOutputStream out;
 
     private final String IP_ADDRESS = "localhost";
     private final int PORT = 8189;
 
     private ArrayList<PrivateStage> privateStageArrayList;
+//    private ArrayList<PrivateStage> deletedPrivateStageArrayList;
 
     private ControllerLogin controllerLogin;
 
@@ -64,6 +65,7 @@ public class ControllerChat {
         try {
 
             socket =new Socket(IP_ADDRESS,PORT);
+
 //            this.isAuthorized = false;
 
             in = new DataInputStream(socket.getInputStream());
@@ -72,8 +74,11 @@ public class ControllerChat {
             controllerLogin = ChatMain.controllerLogin;
 
             privateStageArrayList = new ArrayList<>();
+//            deletedPrivateStageArrayList = new ArrayList<>();
 
             reLoginAfterCrashServer();
+            setDisableBtmAndField(false);
+
 
             new Thread(new Runnable() {
                 @Override
@@ -90,7 +95,7 @@ public class ControllerChat {
                                         @Override
                                         public void run() {
                                             nickName.setText(nickArr[1]);
-                                            circleIsInNet.setStyle("-fx-fill: green");
+//                                            circleIsInNet.setStyle("-fx-fill: green");
                                         }
                                     });
                                 }
@@ -120,13 +125,16 @@ public class ControllerChat {
                                 inputToVBoxMessage(str );
                             }
                         }
-                    } catch (EOFException e){
+                    }catch (EOFException e){
+                        setDisableBtmAndField(true);
                         setTimeOut(ControllerChat.this,2000);
+                        getSystemMessage("Сервер упал. Ожидание подключения");
+                        System.out.println("Ошибка чтения");
                     }
-                    catch (IOException e) {
-//                        setTimeOut(ControllerChat.this, 1000);
+                    catch (IOException e){
                         e.printStackTrace();
-                    }finally {
+                    }
+                    finally {
                         try {
                             socket.close();
                         } catch (IOException e) {
@@ -137,7 +145,9 @@ public class ControllerChat {
                 }
             }).start();
         } catch (IOException e) {
-            e.printStackTrace();
+            setDisableBtmAndField(true);
+            setTimeOut(ControllerChat.this,2000);
+            System.out.println("Попытка подключения");
         }
 
     }
@@ -154,15 +164,14 @@ public class ControllerChat {
 
     }
 
-//    private void getSystemMessage(String msg){
-//        String[] msgArr = msg.split(" ",2);
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
-//            }
-//        });
-//    }
+    private void getSystemMessage(String msg){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vBoxMessage.getChildren().add(new SystemMessageHBox(msg));
+            }
+        });
+    }
 
     private void inputToVBoxMessage(String msg){
         String[] msgArr = msg.split(" ",2);
@@ -207,18 +216,18 @@ public class ControllerChat {
             String nickTo = clientList.getSelectionModel().getSelectedItem();
             if(nickName.getText().equals(nickTo)){
             }else{
-                if(!isTherePrivateWithNickTo(nickTo)){
+                if(!isTherePrivateWithNickTo(privateStageArrayList,nickTo)){
                     createPrivateChat(nickTo);
                 }else{
-                    makeTop(nickTo);
+                    makeTopPrivateMsg(nickTo);
                 }
             }
         }
     }
 
-    private boolean isTherePrivateWithNickTo(String nickTo){
+    private boolean isTherePrivateWithNickTo(ArrayList<PrivateStage> arrayList, String nickTo){
         boolean isThere = false;
-        Iterator <PrivateStage>iterator = privateStageArrayList.iterator();
+        Iterator <PrivateStage>iterator = arrayList.iterator();
 
         while(iterator.hasNext()){
             PrivateStage ps = iterator.next();
@@ -230,15 +239,21 @@ public class ControllerChat {
         return isThere;
     }
 
+
     private void getPrivateMessage(String str){
+
         String[] privateMsgArr = str.split(" ",4);
-        if(!privateMsgArr[1].equals(nickName.getText()) && !isTherePrivateWithNickTo(privateMsgArr[1])){
+//        if(isTherePrivateWithNickTo(deletedPrivateStageArrayList,privateMsgArr[1])){
+//            resurrectPrivateChat(privateMsgArr[1]);
+//        }
+
+        if(!privateMsgArr[1].equals(nickName.getText()) && !isTherePrivateWithNickTo(privateStageArrayList,privateMsgArr[1])){
             createPrivateChat(privateMsgArr[1]);
         }else{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    makeTop(privateMsgArr[1]);
+                    makeTopPrivateMsg(privateMsgArr[1]);
                 }
             });
         }
@@ -267,7 +282,7 @@ public class ControllerChat {
         }
     }
 
-    private void makeTop(String nickTo){
+    private void makeTopPrivateMsg(String nickTo){
         Iterator<PrivateStage> iterator = privateStageArrayList.iterator();
         while (iterator.hasNext()){
             PrivateStage ps =iterator.next();
@@ -279,9 +294,21 @@ public class ControllerChat {
         }
     }
 
+//    private void resurrectPrivateChat (String nickTo){
+//        Iterator<PrivateStage> iterator = deletedPrivateStageArrayList.iterator();
+//        while (iterator.hasNext()){
+//            PrivateStage ps = iterator.next();
+//            if(ps.privateNickTo.equals(nickTo)){
+//                addToPrivateStageArrayListFromDeletedPrivateStageArrayList(ps);
+//            }
+//        }
+//    }
+
+
+
+
 
     private void createPrivateChat(String nickTo){
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -321,26 +348,27 @@ public class ControllerChat {
 
     public void deleteFromPrivateStageArrayList(PrivateStage ps){
         privateStageArrayList.remove(ps);
+//        deletedPrivateStageArrayList.add(ps);
     }
+
+//    public void addToPrivateStageArrayListFromDeletedPrivateStageArrayList(PrivateStage ps){
+//        privateStageArrayList.add(ps);
+//        deletedPrivateStageArrayList.remove(ps);
+//    }
 
 
     public void setTimeOut(ControllerChat controllerChat, int delay){
 
-        setDisableBtmAndField(true);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(!isPortBusy(IP_ADDRESS, PORT)){
-                    try {
-                        Thread.sleep(delay);
-    //                    controllerChat.connect();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 controllerChat.connect();
-                setDisableBtmAndField(false);
             }
         }).start();
     }
@@ -356,6 +384,9 @@ public class ControllerChat {
                 }
                 messageTextField.setDisable(isDisable);
                 btmSend.setDisable(isDisable);
+                clientList.setDisable(isDisable);
+                closeAllPrivateChar();
+
 
             }
         });
@@ -365,19 +396,21 @@ public class ControllerChat {
         if(isLogin){
             try {
                 out.writeUTF("/auth "+login+" "+ password);
+                getSystemMessage("Успешное подключение");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private static boolean isPortBusy(String IpAddress,int port) {
-        try (Socket ignored = new Socket(IpAddress, port)) {
-            return true;
-        } catch (IOException ignored) {
-            return false;
+    private void closeAllPrivateChar(){
+        Iterator<PrivateStage> iterator = privateStageArrayList.iterator();
+        while (iterator.hasNext()){
+            PrivateStage ps = iterator.next();
+            ps.close();
         }
     }
+
     public void writeLoginPassword(String login, String password){
         this.login = login;
         this.password = password;
@@ -385,7 +418,7 @@ public class ControllerChat {
 
     public void dispose(){
         try {
-            if(out != null) {
+            if(!socket.isClosed() && out != null) {
                 System.out.println("Close");
                 out.writeUTF("/end");
             }
