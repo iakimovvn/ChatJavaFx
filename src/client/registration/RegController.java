@@ -138,7 +138,7 @@ public class RegController {
         }
     }
 
-    private static boolean isTextFieldValid(String str){
+    public static boolean isTextFieldValid(String str){
 
             Pattern patternSymbols = Pattern.compile("^[A-z,0-9,_,\\-]{4,20}$");
             Matcher matcher = patternSymbols.matcher(str);

@@ -17,7 +17,7 @@ public class AuthService {
         }
     }
 
-    public static String getNickByLoginAndPass(String login, String pass) {
+    public static synchronized String getNickByLoginAndPass(String login, String pass) {
         String sql = String.format("SELECT nickname FROM main where login = '%s' and password = '%s'", login, pass);
 
         try {
@@ -34,7 +34,7 @@ public class AuthService {
         return null;
     }
 
-    public static void addToBlackList(String holderBlackList, String userToBlackList){
+    public static synchronized void addToBlackList(String holderBlackList, String userToBlackList){
         String sql = String.format("SELECT blacklist FROM main where nickname = '%s'", holderBlackList);
         try {
             ResultSet rs = stmt.executeQuery(sql);
@@ -50,7 +50,7 @@ public class AuthService {
         }
     }
 
-    public static boolean isInBlackList (String holderBlackList, String userForCheck){
+    public static synchronized boolean isInBlackList (String holderBlackList, String userForCheck){
         boolean res = false;
         String sql = String.format("SELECT blacklist FROM main where nickname = '%s'", holderBlackList);
         try {
@@ -69,7 +69,7 @@ public class AuthService {
         }
         return res;
     }
-    public static boolean isUserWithLogin(String login){
+    public static synchronized boolean isUserWithLogin(String login){
         boolean isUser = false;
         String sql = String.format("SELECT id FROM main where login = '%s'", login );
         try {
@@ -83,7 +83,7 @@ public class AuthService {
         return isUser;
     }
 
-    public static boolean isUserWithNick(String nick){
+    public synchronized static boolean isUserWithNick(String nick){
         boolean isUser = false;
         String sql = String.format("SELECT id FROM main where nickname = '%s'", nick );
         try {
@@ -98,7 +98,7 @@ public class AuthService {
 
     }
 
-    public static void deleteFromBlackList (String holderBlackList, String userDeleteFromBlackList){
+    public static synchronized void deleteFromBlackList (String holderBlackList, String userDeleteFromBlackList){
         String sql = String.format("SELECT blacklist FROM main where nickname = '%s'", holderBlackList);
         try {
             ResultSet rs = stmt.executeQuery(sql);
@@ -122,7 +122,7 @@ public class AuthService {
 
     }
 
-    public static String registration(String regData){
+    public static synchronized String registration(String regData){
         String msg="";
         String[] regDataArr = regData.split(" ");
         try {
@@ -142,7 +142,7 @@ public class AuthService {
         }
         return msg;
     }
-    public static String recoveryPass(String recoveryData){
+    public static synchronized String recoveryPass(String recoveryData){
         String resMsg = "/recovery ";
         String[] recoveryDataArr = recoveryData.split(" ");
         String sql = String.format("SELECT password FROM main where login = '%s' and  controlword = '%s';"

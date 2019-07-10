@@ -2,6 +2,7 @@ package client.login;
 
 import client.ChatMain;
 import client.chat.ControllerChat;
+import client.registration.RegController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,10 +58,14 @@ public class ControllerLogin {
         }
         String login = loginField.getText();
         String password = passwordField.getText();
-        controllerChat.writeLoginPassword(login, password);
-        controllerChat.sendMsgFromString("/auth " + login + " " + password);
-        loginField.clear();
-        passwordField.clear();
+        if(RegController.isTextFieldValid(login) && RegController.isTextFieldValid(password)) {
+            controllerChat.writeLoginPassword(login, password);
+            controllerChat.sendMsgFromString("/auth " + login + " " + password);
+            loginField.clear();
+            passwordField.clear();
+        }else{
+            writeToLabelNotIdentification("Введены неправильные значения");
+        }
     }
 
     public void writeToLabelNotIdentification(String str){
