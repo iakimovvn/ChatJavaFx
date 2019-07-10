@@ -36,6 +36,7 @@ public class ControllerLogin {
 
 
     public void setAuthorized(boolean isAuthorized){
+        controllerChat.setLogin(isAuthorized);
         if(isAuthorized){
             Platform.runLater(new Runnable() {
                 @Override
@@ -44,8 +45,12 @@ public class ControllerLogin {
                 }
             });
         }else{
-            ChatMain.primaryStage.setScene(ChatMain.sceneLogin);
-        }
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ChatMain.primaryStage.setScene(ChatMain.sceneLogin);
+                }
+            });        }
     }
 
     public void tryToAuth() {

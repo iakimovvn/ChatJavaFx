@@ -99,7 +99,6 @@ public class ControllerChat {
                                         }
                                     });
                                 }
-                                isLogin = true;
                                 break;
                             }else{
                                 controllerLogin.writeToLabelNotIdentification(str);
@@ -414,6 +413,10 @@ public class ControllerChat {
     public void writeLoginPassword(String login, String password){
         this.login = login;
         this.password = password;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
     }
 
     public void dispose(){
