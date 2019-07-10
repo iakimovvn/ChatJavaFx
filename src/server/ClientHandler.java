@@ -12,7 +12,6 @@ public class ClientHandler {
     private Server server;
 
     private String nick;
-    private boolean authOk = false;
 
 
 
@@ -44,7 +43,6 @@ public class ClientHandler {
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if (newNick != null) {
                                     if(!server.isNickBusy(newNick)){
-                                        authOk = true;
                                         sendMsg("/authok " +newNick);
                                         nick = newNick;
                                         server.subscribe(ClientHandler.this);
@@ -58,7 +56,7 @@ public class ClientHandler {
                             }
                         }
 
-                        while (authOk){
+                        while (true){
                             String str = in.readUTF();
                             if(str.startsWith("/")) {
                                 if (str.equals("/end")) {

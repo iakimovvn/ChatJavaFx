@@ -4,22 +4,18 @@ import client.ChatMain;
 import client.login.ControllerLogin;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import sun.rmi.runtime.RuntimeUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 public class ControllerChat {
 
@@ -33,6 +29,10 @@ public class ControllerChat {
     private ArrayList<PrivateStage> privateStageArrayList;
 
     private ControllerLogin controllerLogin;
+
+    private boolean isLogin = false;
+    private String login;
+    private String password;
 
     @FXML
     private TextField messageTextField;
@@ -52,6 +52,9 @@ public class ControllerChat {
     @FXML
     private ScrollPane scrollPaneMsg;
 
+    @FXML
+    private Button btmSend;
+
 
 
 
@@ -59,6 +62,7 @@ public class ControllerChat {
 
     public void connect() {
         try {
+
             socket =new Socket(IP_ADDRESS,PORT);
 //            this.isAuthorized = false;
 
@@ -69,7 +73,7 @@ public class ControllerChat {
 
             privateStageArrayList = new ArrayList<>();
 
-
+            reLoginAfterCrashServer();
 
             new Thread(new Runnable() {
                 @Override
@@ -79,15 +83,18 @@ public class ControllerChat {
                             String str = in.readUTF();
                             if(str.startsWith("/serverclosed")) break;
                             if(str.startsWith("/authok")) {
-                                controllerLogin.setAuthorized(true);
-                                String[] nickArr = str.split(" ");
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        nickName.setText(nickArr[1]);
-                                        circleIsInNet.setStyle("-fx-fill: green");
-                                    }
-                                });
+                                if(!isLogin) {
+                                    controllerLogin.setAuthorized(true);
+                                    String[] nickArr = str.split(" ");
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            nickName.setText(nickArr[1]);
+                                            circleIsInNet.setStyle("-fx-fill: green");
+                                        }
+                                    });
+                                }
+                                isLogin = true;
                                 break;
                             }else{
                                 controllerLogin.writeToLabelNotIdentification(str);
@@ -113,7 +120,10 @@ public class ControllerChat {
                                 inputToVBoxMessage(str );
                             }
                         }
-                    } catch (IOException e) {
+                    } catch (EOFException e){
+                        setTimeOut(ControllerChat.this,2000);
+                    }
+                    catch (IOException e) {
 //                        setTimeOut(ControllerChat.this, 1000);
                         e.printStackTrace();
                     }finally {
@@ -314,18 +324,63 @@ public class ControllerChat {
     }
 
 
-    public static void setTimeOut(ControllerChat controllerChat, int delay){
+    public void setTimeOut(ControllerChat controllerChat, int delay){
+
+        setDisableBtmAndField(true);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(delay);
-                    controllerChat.connect();
+                while(!isPortBusy(IP_ADDRESS, PORT)){
+                    try {
+                        Thread.sleep(delay);
+    //                    controllerChat.connect();
                     } catch (InterruptedException e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
+                    }
                 }
+                controllerChat.connect();
+                setDisableBtmAndField(false);
             }
         }).start();
+    }
+
+    private void setDisableBtmAndField(boolean isDisable){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(isDisable){
+                    circleIsInNet.setStyle("-fx-fill: red");
+                }else{
+                    circleIsInNet.setStyle("-fx-fill: green");
+                }
+                messageTextField.setDisable(isDisable);
+                btmSend.setDisable(isDisable);
+
+            }
+        });
+    }
+
+    private void reLoginAfterCrashServer(){
+        if(isLogin){
+            try {
+                out.writeUTF("/auth "+login+" "+ password);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static boolean isPortBusy(String IpAddress,int port) {
+        try (Socket ignored = new Socket(IpAddress, port)) {
+            return true;
+        } catch (IOException ignored) {
+            return false;
+        }
+    }
+    public void writeLoginPassword(String login, String password){
+        this.login = login;
+        this.password = password;
     }
 
     public void dispose(){

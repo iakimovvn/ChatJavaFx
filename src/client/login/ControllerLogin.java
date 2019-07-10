@@ -57,6 +57,7 @@ public class ControllerLogin {
         }
         String login = loginField.getText();
         String password = passwordField.getText();
+        controllerChat.writeLoginPassword(login, password);
         controllerChat.sendMsgFromString("/auth " + login + " " + password);
         loginField.clear();
         passwordField.clear();

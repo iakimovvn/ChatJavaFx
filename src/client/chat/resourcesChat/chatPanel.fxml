@@ -30,7 +30,7 @@
                   <HBox prefHeight="30.0" prefWidth="400.0">
                      <children>
                         <TextField fx:id="messageTextField" onAction="#sendMsg" promptText="Введите сообщение..." styleClass="text-field-msg" />
-                        <Button mnemonicParsing="false" onAction="#sendMsg" styleClass="button-send-msg" text="SEND" />
+                        <Button fx:id="btmSend" mnemonicParsing="false" onAction="#sendMsg" styleClass="button-send-msg" text="SEND" />
                      </children>
                   </HBox>
                </children>
