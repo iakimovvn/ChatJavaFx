@@ -59,6 +59,7 @@ public class Server {
     }
 
     public void broadcastMsg(ClientHandler from, String msg) {
+        AuthService.writeMessageToSQLite(from.getNick(),msg);
         for (ClientHandler o : clients) {
             if (!AuthService.isInBlackList(from.getNick(),o.getNick())) {
                 o.sendMsg(msg);
@@ -95,6 +96,9 @@ public class Server {
         clients.add(clientHandler);
         broadcastSystemMsg(clientHandler.getNick()+" полдключился");
         broadcastClientList();
+        AuthService.sendAllMessage(clientHandler);
+
+
     }
 
     public void unsubscribe (ClientHandler clientHandler){

@@ -12,6 +12,7 @@ public class AuthService {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:./src/server/MyUsers.db");
             stmt = connection.createStatement();
+            clearMessageTable();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -170,6 +171,39 @@ public class AuthService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void writeMessageToSQLite(String nickName, String message){
+        String sql = String.format("INSERT INTO messages (nickname, message) VALUES ('%s','%s');",nickName, message);
+        try {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearMessageTable(){
+        String sql = "DELETE FROM messages;";
+        try {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static synchronized void sendAllMessage(ClientHandler clientHandler) {
+        String sql = "SELECT nickname, message FROM messages;";
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                clientHandler.sendMsg(rs.getString(1)+" "+rs.getString(2));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void disconnect() {
