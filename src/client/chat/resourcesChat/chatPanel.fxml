@@ -24,7 +24,8 @@
             <MenuItem mnemonicParsing="false" text="Green-Yellow"  onAction="#makeGreenYellowTheme"/>
          </Menu>
          <Menu mnemonicParsing="false" text="Tools">
-            <MenuItem mnemonicParsing="false" text="Clear" onAction="#clearChat"/>
+             <MenuItem mnemonicParsing="false" text="clear Blacklist" onAction="#clearBlacklist"/>
+             <MenuItem mnemonicParsing="false" text="Clear" onAction="#clearChat"/>
          </Menu>
          <Menu mnemonicParsing="false" text="Logout">
             <MenuItem mnemonicParsing="false" text="Logout" onAction="#logout"/>

@@ -3,8 +3,11 @@ package client.chat;
 import client.ChatMain;
 import client.login.ControllerLogin;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -27,7 +30,7 @@ public class ControllerChat {
     private final int PORT = 8189;
 
     private ArrayList<PrivateStage> privateStageArrayList;
-//    private ArrayList<PrivateStage> deletedPrivateStageArrayList;
+    private ArrayList<PrivateStage> deletedPrivateStageArrayList;
 
     private ControllerLogin controllerLogin;
 
@@ -74,10 +77,19 @@ public class ControllerChat {
             controllerLogin = ChatMain.controllerLogin;
 
             privateStageArrayList = new ArrayList<>();
-//            deletedPrivateStageArrayList = new ArrayList<>();
+            deletedPrivateStageArrayList = new ArrayList<>();
+
+            clientList.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                @Override
+                public void handle(ContextMenuEvent event) {
+                    MyContextMenu myContextMenu = new MyContextMenu(clientList.getSelectionModel().getSelectedItem());
+                    myContextMenu.show(clientList,event.getScreenX(),event.getScreenY());
+                }
+            });
 
             reLoginAfterCrashServer();
             setDisableBtmAndField(false);
+
 
 
             new Thread(new Runnable() {
@@ -215,7 +227,10 @@ public class ControllerChat {
             String nickTo = clientList.getSelectionModel().getSelectedItem();
             if(nickName.getText().equals(nickTo)){
             }else{
-                if(!isTherePrivateWithNickTo(privateStageArrayList,nickTo)){
+                if(isTherePrivateWithNickTo(deletedPrivateStageArrayList, nickTo)){
+                   resurrectPrivateChat(nickTo);
+                }
+                else if(!isTherePrivateWithNickTo(privateStageArrayList,nickTo)){
                     createPrivateChat(nickTo);
                 }else{
                     makeTopPrivateMsg(nickTo);
@@ -242,9 +257,9 @@ public class ControllerChat {
     private void getPrivateMessage(String str){
 
         String[] privateMsgArr = str.split(" ",4);
-//        if(isTherePrivateWithNickTo(deletedPrivateStageArrayList,privateMsgArr[1])){
-//            resurrectPrivateChat(privateMsgArr[1]);
-//        }
+        if(isTherePrivateWithNickTo(deletedPrivateStageArrayList,privateMsgArr[1])){
+            resurrectPrivateChat(privateMsgArr[1]);
+        }
 
         if(!privateMsgArr[1].equals(nickName.getText()) && !isTherePrivateWithNickTo(privateStageArrayList,privateMsgArr[1])){
             createPrivateChat(privateMsgArr[1]);
@@ -293,15 +308,7 @@ public class ControllerChat {
         }
     }
 
-//    private void resurrectPrivateChat (String nickTo){
-//        Iterator<PrivateStage> iterator = deletedPrivateStageArrayList.iterator();
-//        while (iterator.hasNext()){
-//            PrivateStage ps = iterator.next();
-//            if(ps.privateNickTo.equals(nickTo)){
-//                addToPrivateStageArrayListFromDeletedPrivateStageArrayList(ps);
-//            }
-//        }
-//    }
+
 
 
 
@@ -347,13 +354,8 @@ public class ControllerChat {
 
     public void deleteFromPrivateStageArrayList(PrivateStage ps){
         privateStageArrayList.remove(ps);
-//        deletedPrivateStageArrayList.add(ps);
+        deletedPrivateStageArrayList.add(ps);
     }
-
-//    public void addToPrivateStageArrayListFromDeletedPrivateStageArrayList(PrivateStage ps){
-//        privateStageArrayList.add(ps);
-//        deletedPrivateStageArrayList.remove(ps);
-//    }
 
 
     public void setTimeOut(ControllerChat controllerChat, int delay){
@@ -415,13 +417,6 @@ public class ControllerChat {
         this.password = password;
     }
 
-    public void setLogin(boolean login) {
-        isLogin = login;
-    }
-
-    public void clearChat(){
-        vBoxMessage.getChildren().clear();
-    }
 
     public void makeGreenYellowTheme(){
         Platform.runLater(new Runnable() {
@@ -448,6 +443,45 @@ public class ControllerChat {
     }
 
 
+    public void addToPrivateStageArrayListFromDeletedPrivateStageArrayList(PrivateStage ps){
+        privateStageArrayList.add(ps);
+        deletedPrivateStageArrayList.remove(ps);
+    }
+
+    private void resurrectPrivateChat (String nickTo){
+        Iterator<PrivateStage> iterator = deletedPrivateStageArrayList.iterator();
+        while (iterator.hasNext()){
+            PrivateStage ps = iterator.next();
+            if(ps.privateNickTo.equals(nickTo)){
+                addToPrivateStageArrayListFromDeletedPrivateStageArrayList(ps);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ps.show();
+                    }
+                });
+                break;
+            }
+        }
+    }
+
+    public void addToBlacklist(){
+
+    }
+
+    public void clearBlacklist(){
+        sendMsgFromString("/clearblacklist");
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
+    public void clearChat(){
+        vBoxMessage.getChildren().clear();
+    }
+
+
 
     public void dispose(){
         try {
@@ -459,5 +493,33 @@ public class ControllerChat {
             e.printStackTrace();
         }
 
+    }
+
+    public class MyContextMenu extends ContextMenu {
+        private String nick;
+
+        public MyContextMenu(String nick) {
+            this.nick = nick;
+            MenuItem addBlackList = new MenuItem("add to BlackList");
+            MenuItem removeFromBlackList = new MenuItem(" remove from BlackList");
+
+            addBlackList.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    sendMsgFromString("/blacklist "+nick);
+
+                }
+            });
+
+            removeFromBlackList.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    sendMsgFromString("/delblacklist "+nick);
+
+                }
+            });
+
+            this.getItems().addAll(addBlackList,removeFromBlackList);
+        }
     }
 }
