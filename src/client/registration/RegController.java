@@ -173,7 +173,7 @@ public class RegController {
 
     public void dispose(){
         try {
-            if(out != null) {
+            if(out != null && !socket.isClosed()) {
                 System.out.println("Close");
                 out.writeUTF("/end");
             }

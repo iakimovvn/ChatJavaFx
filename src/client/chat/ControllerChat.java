@@ -6,11 +6,15 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -187,12 +191,14 @@ public class ControllerChat {
     private void inputToVBoxMessage(String msg){
         String[] msgArr = msg.split(" ",2);
         if(msgArr[0].equals("/systemmsg")){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
-                }
-            });
+            if(!msgArr[1].startsWith("null")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        vBoxMessage.getChildren().add(new SystemMessageHBox(msgArr[1]));
+                    }
+                });
+            }
         } else if(msgArr[0].equals(nickName.getText())) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -309,11 +315,6 @@ public class ControllerChat {
     }
 
 
-
-
-
-
-
     private void createPrivateChat(String nickTo){
         Platform.runLater(new Runnable() {
             @Override
@@ -358,7 +359,7 @@ public class ControllerChat {
     }
 
 
-    public void setTimeOut(ControllerChat controllerChat, int delay){
+    private void setTimeOut(ControllerChat controllerChat, int delay){
 
 
         new Thread(new Runnable() {
@@ -443,7 +444,7 @@ public class ControllerChat {
     }
 
 
-    public void addToPrivateStageArrayListFromDeletedPrivateStageArrayList(PrivateStage ps){
+    private void addToPrivateStageArrayListFromDeletedPrivateStageArrayList(PrivateStage ps){
         privateStageArrayList.add(ps);
         deletedPrivateStageArrayList.remove(ps);
     }
@@ -465,9 +466,6 @@ public class ControllerChat {
         }
     }
 
-    public void addToBlacklist(){
-
-    }
 
     public void clearBlacklist(){
         sendMsgFromString("/clearblacklist");
@@ -485,7 +483,7 @@ public class ControllerChat {
 
     public void dispose(){
         try {
-            if(!socket.isClosed() && out != null) {
+            if( out != null && !socket.isClosed()) {
                 System.out.println("Close");
                 out.writeUTF("/end");
             }
@@ -495,10 +493,10 @@ public class ControllerChat {
 
     }
 
-    public class MyContextMenu extends ContextMenu {
+    private class MyContextMenu extends ContextMenu {
         private String nick;
 
-        public MyContextMenu(String nick) {
+        private MyContextMenu(String nick) {
             this.nick = nick;
             MenuItem addBlackList = new MenuItem("add to BlackList");
             MenuItem removeFromBlackList = new MenuItem(" remove from BlackList");
@@ -520,6 +518,83 @@ public class ControllerChat {
             });
 
             this.getItems().addAll(addBlackList,removeFromBlackList);
+        }
+    }
+
+    private class MyMessageHBox extends HBox {
+
+
+        private MyMessageHBox(String nickname, String message) {
+            setPrefWidth(350);
+            setAlignment(Pos.CENTER_LEFT);
+
+            Pane pane = new Pane();
+            pane.setPrefWidth(10);
+            this.getChildren().add(pane);
+
+            Label nickLabel = new Label(nickname+": ");
+            nickLabel.setFont(Font.font("Arial",16));
+            nickLabel.setAlignment(Pos.CENTER);
+            nickLabel.setTextFill(Color.RED);
+            nickLabel.setMaxWidth(140);
+            this.getChildren().add(nickLabel);
+
+            Label messageLbl = new Label(message);
+            messageLbl.setFont(Font.font("Arial",14));
+            messageLbl.setAlignment(Pos.CENTER_LEFT);
+            messageLbl.setTextFill(Color.DARKBLUE);
+            messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(255,246,148), CornerRadii.EMPTY, Insets.EMPTY)));
+
+            messageLbl.setMaxWidth(280);
+            this.getChildren().add(messageLbl);
+        }
+
+
+    }
+
+    private class SystemMessageHBox extends HBox {
+
+        private SystemMessageHBox(String msg) {
+
+            setPrefWidth(350);
+            setAlignment(Pos.CENTER);
+
+            Label messageLbl = new Label(msg);
+            messageLbl.setFont(Font.font("Arial",12));
+            messageLbl.setAlignment(Pos.CENTER);
+            messageLbl.setTextFill(Color.GRAY);
+            messageLbl.setMaxWidth(350);
+            this.getChildren().add(messageLbl);
+        }
+    }
+
+    private class OtherMessageHBox extends HBox {
+
+        private OtherMessageHBox(String nickname, String message) {
+            setPrefWidth(350);
+            setAlignment(Pos.CENTER_RIGHT);
+
+
+            Label messageLbl = new Label(message);
+            messageLbl.setFont(Font.font("Arial",14));
+            messageLbl.setAlignment(Pos.CENTER_RIGHT);
+            messageLbl.setTextFill(Color.BLUE);
+            messageLbl.setMaxWidth(280);
+            messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(255,225,221), CornerRadii.EMPTY, Insets.EMPTY)));
+
+            this.getChildren().add(messageLbl);
+
+            Label nickLabel = new Label(" :"+nickname);
+            nickLabel.setFont(Font.font("Arial",16));
+            nickLabel.setAlignment(Pos.CENTER);
+            nickLabel.setTextFill(Color.GREEN);
+            nickLabel.setMaxWidth(140);
+            this.getChildren().add(nickLabel);
+
+            Pane pane = new Pane();
+            pane.setPrefWidth(10);
+            this.getChildren().add(pane);
+
         }
     }
 }
