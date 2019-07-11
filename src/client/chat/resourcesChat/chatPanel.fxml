@@ -10,22 +10,39 @@
 
 
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="vBox-back-chat"
-      stylesheets="@/client/chat/resourcesChat/css/StyleChat.css" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1"
+      stylesheets="@/client/chat/resourcesChat/css/StyleClassBlue.css" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="client.chat.ControllerChat">
    <children>
-      <HBox prefHeight="575.0" prefWidth="600.0" styleClass="vBox-back-chat">
+
+      <MenuBar prefHeight="20.0" styleClass="menu-bar">
+         <Menu mnemonicParsing="false" text="Theme">
+            <MenuItem mnemonicParsing="false" text="Blue-Red" onAction="#makeBlueRedTheme" />
+            <MenuItem mnemonicParsing="false" text="Green-Yellow"  onAction="#makeGreenYellowTheme"/>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Tools">
+            <MenuItem mnemonicParsing="false" text="Clear" onAction="#clearChat"/>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Logout">
+            <MenuItem mnemonicParsing="false" text="Logout" onAction="#logout"/>
+         </Menu>
+      </MenuBar>
+
+      <HBox styleClass="hBox-back-chat">
          <children>
-            <VBox prefHeight="575.0" prefWidth="400.0" styleClass="vBox-left">
+            <VBox  styleClass="vBox-left">
                <children>
-                  <HBox prefHeight="40.0" prefWidth="200.0" styleClass="hBox-nickname">
+                  <HBox styleClass="hBox-nickname">
                      <children>
-                        <Label fx:id="nickName" prefHeight="35.0" styleClass="label-nickName" text="userName" />
+                        <Label fx:id="nickName" styleClass="label-nickName" text="userName" />
                         <Circle fx:id="circleIsInNet" disable="true" fill="DODGERBLUE" radius="8.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" styleClass="circle-not-in-net" />
                      </children>
                   </HBox>
                    <ScrollPane fx:id="scrollPaneMsg" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" hbarPolicy="NEVER" styleClass="scroll-pane-message">
-                     <VBox fx:id="vBoxMessage" prefWidth="400.0" styleClass="vBox-msg" />
+                     <VBox fx:id="vBoxMessage" prefWidth="400.0" VBox.vgrow="ALWAYS" styleClass="vBox-msg" />
                    </ScrollPane>
                   <HBox prefHeight="30.0" prefWidth="400.0">
                      <children>
@@ -38,7 +55,7 @@
             <VBox prefHeight="575.0" prefWidth="200.0" styleClass="vBox-right" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="label-user-in-net" text="users in net" />
-                  <ListView fx:id="clientList" onMouseClicked="#createPrivateChatFromClick" prefHeight="537.0" prefWidth="200.0" styleClass="list-view-in-net" />
+                  <ListView fx:id="clientList" onMouseClicked="#createPrivateChatFromClick" VBox.vgrow="ALWAYS" prefWidth="200.0" styleClass="list-view-in-net" />
                </children>
             </VBox>
          </children>

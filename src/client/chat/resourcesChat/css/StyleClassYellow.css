@@ -2,11 +2,11 @@
 .button-send-msg{
     -fx-pref-width: 60;
     -fx-pref-height: 30;
-    -fx-background-color: #ffb7ab;
+    -fx-background-color: #f8ffc8;
 }
 
 .circle-not-in-net{
-    -fx-fill: Red;
+    -fx-fill: #0012ff;
 }
 .circle-in-net{
     -fx-fill: Green;
@@ -15,9 +15,15 @@
     -fx-pref-width: 600;
     -fx-pref-height: 575;
 }
+
+.hBox-back-chat{
+    -fx-pref-width: 600;
+    -fx-pref-height: 555;
+}
+
 .hBox-nickname{
     -fx-background-color: #8dbfff;
-    -fx-pref-height: 40;
+    -fx-pref-height: 20;
     -fx-pref-width: 400;
     -fx-alignment: CENTER;
     -fx-border-color: #1e02ff;
@@ -54,24 +60,37 @@
 }
 
 .label-user-in-net{
-    -fx-background-color: #ffb7ab;
-    -fx-pref-height: 40;
+    -fx-background-color: #cfffd4;
+    -fx-pref-height: 20;
     -fx-pref-width: 200;
     -fx-alignment: CENTER;
-    -fx-border-color: #ff0134;
+    -fx-border-color: #06763e;
     -fx-font-family: Arial;
     -fx-font-size: 20;
 }
 
+.list-view-in-net .list-cell:even {
+    -fx-background-color: #caf1ff;
+    -fx-text-fill: #02144f;
+}
+.list-view-in-net .list-cell:odd {
+    -fx-background-color: #e1e6ff;
+    -fx-text-fill: #02144f;
+}
 
 .list-view-in-net{
     -fx-background-color: #fff7e8;
 }
-.scroll-pane-message{
 
+.menu-bar{
+    -fx-background-color: #fff9dc;
 }
+.menu-item{
+    -fx-background-color: #e3f1ff;
+}
+
 .scroll-pane-message .viewport{
-    -fx-background-color: #d1fffa;
+    -fx-background-color: #fffcf3;
 }
 
 .text-field-msg{
@@ -79,26 +98,22 @@
     -fx-pref-width: 340;
 }
 
-.vBox-back-chat{
-    -fx-pref-width: 600;
-    -fx-pref-height: 575;
-}
 
 .vBox-back-private-chat{
     -fx-pref-width: 400;
     -fx-pref-height: 575;
-    -fx-background-color: #d1fffa;
+    -fx-background-color: #f4ffcd;
 
 }
 .vBox-left{
-    -fx-background-color: #d1fffa;
+    -fx-background-color: #fff7df;
     -fx-pref-width: 400;
-    -fx-pref-height: 575;
+    -fx-pref-height: 555;
 }
 .vBox-right{
     -fx-pref-width: 200;
-    -fx-pref-height: 575;
-    -fx-background-color: #fff7e8;
+    -fx-pref-height: 555;
+    -fx-background-color: #fff2e7;
 }
 .vBox-msg{
     /*-fx-pref-width: 400;*/

@@ -419,6 +419,36 @@ public class ControllerChat {
         isLogin = login;
     }
 
+    public void clearChat(){
+        vBoxMessage.getChildren().clear();
+    }
+
+    public void makeGreenYellowTheme(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                btmSend.getStyleClass().clear();
+                btmSend.getStyleClass().add("button-send-msg-yellow");
+
+
+            }
+        });
+
+    }
+
+    public void makeBlueRedTheme(){
+        btmSend.getStyleClass().clear();
+        btmSend.getStyleClass().add("button-send-msg");
+
+    }
+
+    public void logout(){
+        controllerLogin.setAuthorized(false);
+        dispose();
+    }
+
+
+
     public void dispose(){
         try {
             if(!socket.isClosed() && out != null) {
