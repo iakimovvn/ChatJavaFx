@@ -1,9 +1,14 @@
 package server;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 public class ClientHandler {
     private Socket socket;
@@ -109,6 +114,8 @@ public class ClientHandler {
                                 }
                             }else {
                                 server.broadcastMsg(ClientHandler.this,nick+" "+str);
+                                AuthService.writeMessageToSQLite(nick, str);
+
                             }
                     }
                 } catch (IOException e) {

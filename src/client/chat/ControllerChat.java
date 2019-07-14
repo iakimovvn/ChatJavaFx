@@ -6,7 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
@@ -14,7 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,6 +45,7 @@ public class ControllerChat {
     private boolean isLogin = false;
     private String login;
     private String password;
+    private String nick;
 
     @FXML
     private TextField messageTextField;
@@ -107,11 +112,12 @@ public class ControllerChat {
                                 if(!isLogin) {
                                     controllerLogin.setAuthorized(true);
                                     String[] nickArr = str.split(" ");
+                                    nick = nickArr[1];
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                            nickName.setText(nickArr[1]);
-//                                            circleIsInNet.setStyle("-fx-fill: green");
+
+                                            nickName.setText(nick);
                                         }
                                     });
                                 }
@@ -148,8 +154,7 @@ public class ControllerChat {
                     }
                     catch (IOException e){
                         e.printStackTrace();
-                    }
-                    finally {
+                    } finally {
                         try {
                             socket.close();
                         } catch (IOException e) {
@@ -199,11 +204,11 @@ public class ControllerChat {
                     }
                 });
             }
-        } else if(msgArr[0].equals(nickName.getText())) {
+        } else if(msgArr[0].equals(nick)){
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    vBoxMessage.getChildren().add(new MyMessageHBox(msgArr[0], makeMessageForLabel(msgArr[1])));
+                    vBoxMessage.getChildren().add(new MyMessageHBox(makeMessageForLabel(msgArr[1])));
 
                 }
             });
@@ -232,6 +237,8 @@ public class ControllerChat {
         if(mouseEvent.getClickCount() == 2){
             String nickTo = clientList.getSelectionModel().getSelectedItem();
             if(nickName.getText().equals(nickTo)){
+                Alert alert = new Alert(Alert.AlertType.WARNING,"Вы не можете открыть приватный чат с самим собой!");
+                alert.show();
             }else{
                 if(isTherePrivateWithNickTo(deletedPrivateStageArrayList, nickTo)){
                    resurrectPrivateChat(nickTo);
@@ -239,7 +246,7 @@ public class ControllerChat {
                 else if(!isTherePrivateWithNickTo(privateStageArrayList,nickTo)){
                     createPrivateChat(nickTo);
                 }else{
-                    makeTopPrivateMsg(nickTo);
+                    putTopPrivateMsg(nickTo);
                 }
             }
         }
@@ -273,7 +280,7 @@ public class ControllerChat {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    makeTopPrivateMsg(privateMsgArr[1]);
+                    putTopPrivateMsg(privateMsgArr[1]);
                 }
             });
         }
@@ -292,17 +299,17 @@ public class ControllerChat {
                             privateMsgArr[2]+" "+privateMsgArr[3]));
                 }
                 else if (privateMsgArr[2].equals(nickName.getText())) {
-                    ps.controllerPrivateChat.addToVBoxMessage(new MyMessageHBox(privateMsgArr[2],privateMsgArr[3]));
+                    ps.controllerPrivateChat.addToVBoxMessage(new MyMessageHBox(makeMessageForLabel(privateMsgArr[3])));
                     break;
                 }else{
-                    ps.controllerPrivateChat.addToVBoxMessage(new OtherMessageHBox(privateMsgArr[2],privateMsgArr[3]));
+                    ps.controllerPrivateChat.addToVBoxMessage(new OtherMessageHBox(privateMsgArr[2],makeMessageForLabel(privateMsgArr[3])));
                     break;
                 }
             }
         }
     }
 
-    private void makeTopPrivateMsg(String nickTo){
+    private void putTopPrivateMsg(String nickTo){
         Iterator<PrivateStage> iterator = privateStageArrayList.iterator();
         while (iterator.hasNext()){
             PrivateStage ps =iterator.next();
@@ -329,20 +336,29 @@ public class ControllerChat {
     }
 
     private String makeMessageForLabel(String msg){
-        final int NUMBER_IF_SINGS = 37;
+        final int NUMBER_IF_SINGS = 30;
         if(msg.length() > NUMBER_IF_SINGS){
             String[] msgArr = msg.split(" ");
             StringBuilder stringBuilder = new StringBuilder();
             int singsNow = 0;
             for (String word : msgArr) {
-                if(singsNow+word.length() < NUMBER_IF_SINGS){
+                if(singsNow+word.length() < NUMBER_IF_SINGS-1){
                     stringBuilder.append(word);
                     stringBuilder.append(" ");
                     singsNow+=word.length()+1;
-                }else{
-                    stringBuilder.append("\n");
+                }else if(singsNow+word.length()==NUMBER_IF_SINGS || singsNow+word.length()==NUMBER_IF_SINGS-1){
                     stringBuilder.append(word);
+                    stringBuilder.append("\n");
+
                     singsNow = 0;
+                }else{
+                    int countRemainingSymbols = NUMBER_IF_SINGS - singsNow-1;
+                    String[] twoWordsArr = makeTwoWordFromOne(word, countRemainingSymbols);
+                    stringBuilder.append(twoWordsArr[0]);
+                    stringBuilder.append(twoWordsArr[1]);
+
+                    singsNow = word.length() - countRemainingSymbols;
+
                 }
 
             }
@@ -350,6 +366,25 @@ public class ControllerChat {
 
         }
         return msg;
+
+    }
+
+    private String[] makeTwoWordFromOne(String word, int lengthFirstWord){
+        String[] resArr = new String[2];
+        char[] charWordArr = word.toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <lengthFirstWord ; i++) {
+            stringBuilder.append(charWordArr[i]);
+        }
+        stringBuilder.append("-\n");
+        resArr[0] = stringBuilder.toString();
+        stringBuilder = new StringBuilder();
+        for (int i = lengthFirstWord; i < charWordArr.length ; i++) {
+            stringBuilder.append(charWordArr[i]);
+        }
+        stringBuilder.append(" ");
+        resArr[1] = stringBuilder.toString();
+        return resArr;
 
     }
 
@@ -494,10 +529,8 @@ public class ControllerChat {
     }
 
     private class MyContextMenu extends ContextMenu {
-        private String nick;
 
         private MyContextMenu(String nick) {
-            this.nick = nick;
             MenuItem addBlackList = new MenuItem("add to BlackList");
             MenuItem removeFromBlackList = new MenuItem(" remove from BlackList");
 
@@ -521,36 +554,62 @@ public class ControllerChat {
         }
     }
 
+
     private class MyMessageHBox extends HBox {
 
 
-        private MyMessageHBox(String nickname, String message) {
-            setPrefWidth(350);
+        private MyMessageHBox(String message) {
+            setMaxWidth(350);
             setAlignment(Pos.CENTER_LEFT);
 
             Pane pane = new Pane();
             pane.setPrefWidth(10);
             this.getChildren().add(pane);
 
-            Label nickLabel = new Label(nickname+": ");
-            nickLabel.setFont(Font.font("Arial",16));
+            Label nickLabel = new Label("ME: ");
+            nickLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             nickLabel.setAlignment(Pos.CENTER);
             nickLabel.setTextFill(Color.RED);
             nickLabel.setMaxWidth(140);
             this.getChildren().add(nickLabel);
 
-            Label messageLbl = new Label(message);
-            messageLbl.setFont(Font.font("Arial",14));
-            messageLbl.setAlignment(Pos.CENTER_LEFT);
-            messageLbl.setTextFill(Color.DARKBLUE);
-            messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(255,246,148), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            messageLbl.setMaxWidth(280);
-            this.getChildren().add(messageLbl);
+            this.getChildren().add(new PaneMessage(message, Color.YELLOW));
+
         }
 
 
     }
+
+    private class PaneMessage extends Pane {
+        private PaneMessage (String message, Color color){
+            Text msg = new Text(message);
+            msg.setFont(Font.font("Arial", FontPosture.ITALIC,14));
+            Bounds messageBounds = msg.getBoundsInParent();
+
+            double msgWight = messageBounds.getWidth();
+            double msgHeight = messageBounds.getHeight();
+            double paneWight = msgWight + 20;
+            double paneHeight = msgHeight + 20;
+            double msgX = (paneWight - msgWight)/2;
+            double msgY = (paneHeight-msgHeight)/2;
+
+            msg.relocate(msgX,msgY);
+
+            Rectangle rectangle = new Rectangle(0 ,0,paneWight,paneHeight);
+            rectangle.setArcWidth(20);
+            rectangle.setArcHeight(20);
+            rectangle.setFill(color);
+
+           this.getChildren().addAll(rectangle, msg);
+           setPrefSize(paneWight,paneHeight);
+
+        }
+    }
+
+
+
+
 
     private class SystemMessageHBox extends HBox {
 
@@ -568,24 +627,17 @@ public class ControllerChat {
         }
     }
 
+
+
     private class OtherMessageHBox extends HBox {
 
         private OtherMessageHBox(String nickname, String message) {
-            setPrefWidth(350);
+            setMaxWidth(350);
             setAlignment(Pos.CENTER_RIGHT);
-
-
-            Label messageLbl = new Label(message);
-            messageLbl.setFont(Font.font("Arial",14));
-            messageLbl.setAlignment(Pos.CENTER_RIGHT);
-            messageLbl.setTextFill(Color.BLUE);
-            messageLbl.setMaxWidth(280);
-            messageLbl.setBackground(new Background(new BackgroundFill(Color.rgb(255,225,221), CornerRadii.EMPTY, Insets.EMPTY)));
-
-            this.getChildren().add(messageLbl);
+            this.getChildren().add(new PaneMessage(message, Color.PINK));
 
             Label nickLabel = new Label(" :"+nickname);
-            nickLabel.setFont(Font.font("Arial",16));
+            nickLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             nickLabel.setAlignment(Pos.CENTER);
             nickLabel.setTextFill(Color.GREEN);
             nickLabel.setMaxWidth(140);
@@ -597,4 +649,5 @@ public class ControllerChat {
 
         }
     }
+
 }

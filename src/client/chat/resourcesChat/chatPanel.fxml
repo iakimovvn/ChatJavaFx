@@ -43,7 +43,7 @@
                      </children>
                   </HBox>
                    <ScrollPane fx:id="scrollPaneMsg" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" hbarPolicy="NEVER" styleClass="scroll-pane-message">
-                     <VBox fx:id="vBoxMessage" prefWidth="400.0" VBox.vgrow="ALWAYS" styleClass="vBox-msg" />
+                     <VBox fx:id="vBoxMessage" VBox.vgrow="ALWAYS" styleClass="vBox-msg" />
                    </ScrollPane>
                   <HBox prefHeight="30.0" prefWidth="400.0">
                      <children>

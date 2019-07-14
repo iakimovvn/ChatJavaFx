@@ -6,7 +6,6 @@ import client.registration.RecoveryController;
 import client.registration.RegController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

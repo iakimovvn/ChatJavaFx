@@ -132,8 +132,8 @@
     -fx-background-color: #fff7e8;
 }
 .vBox-msg{
-    /*-fx-pref-width: 400;*/
-    /*-fx-pref-height: 505;*/
+    -fx-max-width: 380;
+    -fx-pref-width: 380;
     -fx-spacing: 10;
     -fx-alignment: TOP_CENTER;
 }

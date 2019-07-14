@@ -49,6 +49,7 @@ public class ControllerLogin {
                 @Override
                 public void run() {
                     ChatMain.primaryStage.setScene(ChatMain.sceneLogin);
+                    ChatMain.controllerChat.clearChat();
                 }
             });        }
     }
