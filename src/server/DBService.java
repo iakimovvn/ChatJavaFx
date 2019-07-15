@@ -2,7 +2,7 @@ package server;
 
 import java.sql.*;
 
-public class AuthService {
+public class DBService {
 
     private static Connection connection;
     private static Statement stmt;

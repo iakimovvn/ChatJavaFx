@@ -1,13 +1,9 @@
 package server;
 
-import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 public class ClientHandler {
@@ -38,14 +34,14 @@ public class ClientHandler {
                                 break;
                             }
                             if(str.startsWith("/registration")){
-                                out.writeUTF(AuthService.registration(str));
+                                out.writeUTF(DBService.registration(str));
                             }
                             if(str.startsWith("/recovery")){
-                                out.writeUTF(AuthService.recoveryPass(str));
+                                out.writeUTF(DBService.recoveryPass(str));
                             }
                             if(str.startsWith("/auth")) {
                                 String[] tokens = str.split(" ");
-                                String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
+                                String newNick = DBService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if (newNick != null) {
                                     if(!server.isNickBusy(newNick)){
                                         sendMsg("/authok " +newNick);
@@ -80,11 +76,11 @@ public class ClientHandler {
                                     else if(nick.equals(tokens[1])){
                                         sendMsg("/systemmsg Вы не можете добавить в черный список самого себя");
                                     }
-                                    else if(AuthService.isUserWithNick(tokens[1])) {
-                                        if (AuthService.isInBlackList(nick, tokens[1])) {
+                                    else if(DBService.isUserWithNick(tokens[1])) {
+                                        if (DBService.isInBlackList(nick, tokens[1])) {
                                             sendMsg("/systemmsg пользователь уже в черном списке");
                                         } else {
-                                            AuthService.addToBlackList(nick, tokens[1]);
+                                            DBService.addToBlackList(nick, tokens[1]);
 //                                            sendMsg("/systemmsg Вы добавили пользователя " + tokens[1] + " в черный список");
                                             server.broadcastSystemMsg(nick+" добавил "+tokens[1]+ " в черный список");
                                         }
@@ -98,8 +94,8 @@ public class ClientHandler {
                                         sendMsg("/systemmsg вы не ввели ник пользователя");
 
                                     }
-                                    else if (AuthService.isInBlackList(nick, tokens[1])) {
-                                        AuthService.deleteFromBlackList(nick, tokens[1]);
+                                    else if (DBService.isInBlackList(nick, tokens[1])) {
+                                        DBService.deleteFromBlackList(nick, tokens[1]);
 //                                        sendMsg("Вы удалили пользователя " + tokens[1] + " из черного списока");
                                         server.broadcastSystemMsg(tokens[1]+ " теперь модет общаться с "+nick);
 
@@ -109,12 +105,12 @@ public class ClientHandler {
                                     }
                                 }
                                 if(str.startsWith("/clearblacklist")){
-                                    AuthService.clearBlackList(nick);
+                                    DBService.clearBlackList(nick);
                                     sendMsg("/systemmsg Черный список очищен.");
                                 }
                             }else {
                                 server.broadcastMsg(ClientHandler.this,nick+" "+str);
-                                AuthService.writeMessageToSQLite(nick, str);
+                                DBService.writeMessageToSQLite(nick, str);
 
                             }
                     }
