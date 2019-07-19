@@ -1,0 +1,140 @@
+
+.button-send-msg{
+    -fx-pref-width: 60;
+    -fx-pref-height: 30;
+    -fx-background-color: #f0ff8b;
+    -fx-alignment: CENTER;
+
+}
+.button-send-msg-yellow{
+    -fx-alignment: CENTER;
+    -fx-pref-width: 60;
+    -fx-pref-height: 30;
+    -fx-background-color: #9cff96;
+}
+
+
+
+
+.circle-not-in-net{
+    -fx-fill: Red;
+}
+.circle-in-net{
+    -fx-fill: Green;
+}
+.hBox-back{
+    -fx-pref-width: 600;
+    -fx-pref-height: 575;
+}
+
+.hBox-back-chat{
+    -fx-pref-width: 600;
+    -fx-pref-height: 555;
+}
+
+.hBox-nickname{
+    -fx-background-color: #ffbcbe;
+    -fx-pref-height: 20;
+    -fx-pref-width: 400;
+    -fx-alignment: CENTER;
+    -fx-border-color: #ff0001;
+}
+.hBox-private-nickName{
+    -fx-background-color: #c9afff;
+    -fx-pref-height: 40;
+    -fx-pref-width: 400;
+    -fx-alignment: CENTER;
+    -fx-border-color: #001a65;
+}
+
+.label-private-with{
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+.label-nickName-private{
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.label-nickName{
+    -fx-alignment: CENTER;
+    -fx-pref-height: 40;
+    -fx-pref-width: 150;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.label-user-in-net{
+    -fx-background-color: #8efff5;
+    -fx-pref-height: 20;
+    -fx-pref-width: 200;
+    -fx-alignment: CENTER;
+    -fx-border-color: #060e9d;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+}
+
+.list-view-in-net .list-cell:even {
+    -fx-background-color: #edfffc;
+    -fx-text-fill: #02144f;
+}
+.list-view-in-net .list-cell:odd {
+    -fx-background-color: #bfffbb;
+    -fx-text-fill: #02144f;
+}
+
+.list-view-in-net{
+    -fx-background-color: #fff7e8;
+}
+
+.menu-bar{
+    -fx-background-color: #fff9f6;
+}
+.menu-item{
+    -fx-background-color: #fbe7ff;
+}
+
+.scroll-pane-message .viewport{
+    -fx-background-color: #ffeed7;
+}
+
+.text-field-msg{
+    -fx-pref-height: 30;
+    -fx-pref-width: 340;
+}
+
+
+.vBox-back-private-chat{
+    -fx-pref-width: 400;
+    -fx-pref-height: 575;
+    -fx-background-color: #d1fffa;
+
+}
+
+.vBox-back-chat{
+    -fx-pref-width: 600;
+    -fx-pref-height: 575;
+}
+.vBox-left{
+    -fx-background-color: #e3ffc3;
+    -fx-pref-width: 400;
+    -fx-pref-height: 555;
+}
+.vBox-right{
+    -fx-pref-width: 200;
+    -fx-pref-height: 555;
+    -fx-background-color: #fff7e8;
+}
+.vBox-msg{
+    -fx-max-width: 380;
+    -fx-pref-width: 380;
+    -fx-spacing: 10;
+    -fx-alignment: TOP_CENTER;
+}
+

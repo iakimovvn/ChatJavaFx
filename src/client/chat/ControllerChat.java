@@ -455,22 +455,33 @@ public class ControllerChat {
 
 
     public void makeGreenYellowTheme(){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                btmSend.getStyleClass().clear();
-                btmSend.getStyleClass().add("button-send-msg-yellow");
-
-
-            }
-        });
-
+       changeCssFromEverything("client/chat/resourcesChat/css/StyleClassYellow.css");
     }
 
     public void makeBlueRedTheme(){
-        btmSend.getStyleClass().clear();
-        btmSend.getStyleClass().add("button-send-msg");
+        changeCssFromEverything("client/chat/resourcesChat/css/StyleClassBlue.css");
+    }
 
+    private void changeCssFromEverything(String cssUrl){
+        ChatMain.sceneChat.getRoot().getStylesheets().clear();
+        ChatMain.sceneChat.getRoot().getStylesheets().add(cssUrl);
+        changeCssFromActivePrivate(cssUrl);
+        changeCssFromPrivateDeleted(cssUrl);
+
+    }
+
+    private void changeCssFromActivePrivate(String cssUrl){
+        Iterator <PrivateStage> iterator = privateStageArrayList.iterator();
+        while (iterator.hasNext()){
+            iterator.next().changeCss(cssUrl);
+        }
+    }
+
+    private void changeCssFromPrivateDeleted(String cssUrl){
+        Iterator <PrivateStage> iterator = deletedPrivateStageArrayList.iterator();
+        while (iterator.hasNext()){
+            iterator.next().changeCss(cssUrl);
+        }
     }
 
     public void logout(){
